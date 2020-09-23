@@ -4,3 +4,9 @@ hello Kimbo
 3. git add README.md 
 4. git commit -m "third commit"
 5. git push origin master
+6. git checkout afa206d051273d7a00a2169caa019d88d1bc6407
+7.  git checkout master
+
+
+
+git log --topo-order --all --graph --date=local --pretty=format:'%C(green)%h%C(reset) %><(55,trunc)%s%C(red)%d%C(reset) %C(blue)[%an]%C(reset) %C(yellow)%ad%C(reset)%n'
