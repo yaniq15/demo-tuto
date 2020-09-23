@@ -1,1 +1,6 @@
 hello Kimbo 
+1. git clone https://github.com/yaniq15/demo-tuto.git example_repo
+2. git status
+3. git add README.md 
+4. git commit -m "third commit"
+5. git push origin master
