@@ -11,6 +11,10 @@ Container Engine
 Operatin System
 Infrastructue
 
-
+ Client Server :
+ Docker client : Primary user when client push command:
+        Docker build
+        Docker Pull
+        Dockker Run 
 
 
