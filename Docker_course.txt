@@ -2,3 +2,15 @@ Docker course
 Comprehension DOcker
 les etapes 
 hello
+COurs et comprehension 
+
+
+La technologie de la virualisation :
+1 Containers : APP1:Bin/LIB APP2:Bin/
+Container Engine
+Operatin System
+Infrastructue
+
+
+
+
