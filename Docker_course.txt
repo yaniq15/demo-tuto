@@ -12,9 +12,35 @@ Operatin System
 Infrastructue
 
  Client Server :
- Docker client : Primary user when client push command:
+ Docker client : Primary user when client push command and communicate with Docker Deamon:
         Docker build
         Docker Pull
         Dockker Run 
 
 
+Docker Deamon: Where running Container
+
+Docker_Host : Running DOcker client and Docker Deamon
+
+
+Docker Deamon running in Linux VM in windows 10 (Docker machine )
+
+Image (class)
+    liy juste le template utilise pour creer de contenaire
+    l image est creer avec ke docker build command ou par moi ou autre docker users
+    l image comprend de couche (layers of images)
+    il sont stok dans le Docker registry 
+
+Container (instance de l image):
+    runtime object
+    on cree le Container from images. ds le container  il y a tout la dependence binaire pour rouler une application 
+
+Registries and Repositories :
+    la ou on stock  l image
+    tu peux hoster ton propre regisstry ou tu peux utiliser celui de docker qui est publique qu on appelle DockerHub
+    dans le registry, les images sont stocke dans le repositories.
+    Docker REPOSITORY:
+        Collection de different docker images avec le meme nom qui on diffents tags et chaque tag represent une version diffente d image 
+
+Docker HUB: 
+ Public Docker Registry 
