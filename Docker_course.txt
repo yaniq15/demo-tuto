@@ -174,3 +174,26 @@ a8bbf4691458c9fd71f2b33fef29d7c3acc07cc0f39f32d8cd89c10c1ebd9f55
                     
                     Rebuild image :
                         docker build -t kimbo/debian .
+
+                    On peut utiliser un package dans l image par exemple entre git et vim: 
+
+                    FROM debian:jessie
+                    RUN apt-get update && apt-get install -y \
+                    git \
+                    python
+                    vim
+
+
+
+        CMD Instructions :
+            Specifie quelle commeande tu veux run quand tu debute ton container
+            sinon on ne specifie pas le CMD ds le Dockerfile, on ne utilisera e default command de l image de Base
+            pour debiand le default est bash 
+
+                    $ cat Dockerfile
+                    FROM debian:jessie
+                    RUN apt-get update && apt-get install -y \
+                    git \
+                    vim
+                    CMD ["echo", "kimbo dev"]
+
