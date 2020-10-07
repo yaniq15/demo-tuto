@@ -44,3 +44,61 @@ Registries and Repositories :
 
 Docker HUB: 
  Public Docker Registry 
+
+  docker run busybox:1.24 echo "hello world"
+   docker run busybox:1.24 ls
+
+   the -i flag starts an interactivw container.
+   the -t flag creates a pseudo -tty that attaches stin and stdout
+
+        Naviguer dans l image:
+             winpty docker run -i -t busybox:1.24
+
+
+Foreground VS Detached :
+
+The Linux Sleep COMMAND is used to delay for a specified amount of time
+            docker run -d busybox:1.24  sleep 1000
+
+            docker ps : verifier le container
+            docker ps -a: pour verifier tous les containers
+            docker run --rm busybox1.24 : fermer le container
+           docker run --name hello_world busybox:1.24: pecify docker container we wna to run 
+
+           Docker inspeck:
+           $ docker run -d busybox:1.24 sleep 100
+
+
+        docker inspeck $ docker run -d busybox:1.24 sleep 100
+c22baf1cee09a0d5ab19f191238b7a72826348b4398c18a2c7bf79c2ffd90dad
+
+
+
+TOMCAT CONTAINER(IMAGE):
+
+ -p host-port: container_port
+
+ winpty docker run -it -p 8888:8080 tomcat:8.0
+  winpty docker run -it -d -p 8888:8080 tomcat:8.0: allow container running on the backround 
+
+
+$ winpty docker run -it -d -p 8888:8080 tomcat:8.0
+a8bbf4691458c9fd71f2b33fef29d7c3acc07cc0f39f32d8cd89c10c1ebd9f55
+
+
+-===Voir le log :
+    docker logs a8bbf4691458c9fd71f2b33fef29d7c3acc07cc0f39f32d8cd89c10c1ebd9f55
+
+
+
+
+    DOCKER IMAGE LAYER :
+        CONTAINERIMAGE
+
+
+        to show layer image :  docker history busybox:1.24
+        comme busybox est composer de deux couche 
+        la couche de base pourr creer le file et la couche de commande Bash
+
+        toutes les change se passe dans le writable layer
+        quand le copntainer est delete le writable layer est delete aussi
