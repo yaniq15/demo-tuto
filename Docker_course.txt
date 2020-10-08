@@ -271,4 +271,9 @@ Allow diffeent container communicate each others : Recipeient >>> host >>> Sourc
 
 $ docker run -d -p 5000:5000 --link redis dockerappp:v0.2
 2d519bc03a5212ead43ecaee7d5c4bc630738069824731ea1579462e28dcb796
+Veriofy REdis IP : docker inspect 144f5832ec49 | grep IP
+GO TO CONTAINER AND PING REDIS : winpty docker exec -it 2d519bc03a52 bash
 
+
+
+AUTOMATE CURRENT WORKFLOW WITH DOCKER COMPOSE 
