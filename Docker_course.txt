@@ -229,7 +229,46 @@ a8bbf4691458c9fd71f2b33fef29d7c3acc07cc0f39f32d8cd89c10c1ebd9f55
 
 
         ================= PUSH DOCKER IMAGES TO DOCKER HUB ===================
+        To push image to DOCKER DockerHub
+        Rename the Image :
+            docker_hub_id / repository_name
+            docker images
+            docker tag 50cfe3e14717 kimbo/debian:1.01
+
+Docker login : winpty docker login --username=kimbo150
+
+docker push kimbo/debian:1.01
+
+"docker login <url> --username=<username>"
+
+
+CREATE CONTAINERIZED WEB APPLICATION 
+
+             docker build -t dockerapp:v0.1 .
+            docker images
+            run notre container :
+                docker run -d -p 5000:5000 b5913058a6d8
+                -d: run conmtainer in background
+                -p: expose le port
+                par defaut python va rouler sur le port 5000 et le port 5000 host (l0cal)
+                 docker run -d -p 5000:5000 b5913058a6d8
+                    6a873a54b3b0c924fe66533dd87f10fbb63472e2cf597a2bcdc2aedb5b24fca8
+
+                    On doit chercher quel IP python utilise : la commande docker-machie ls
+
+                     docker exec -it ea940edda7e9 acceder via le bash
+
+
+Implement a simple Key-value Lookup Service 
+
+
+            stop container bdefore staert same cotainer with different tag : $ docker stop ea940edda7e9
 
 
 
+Docker Container Links :
+Allow diffeent container communicate each others : Recipeient >>> host >>> Source 
+
+$ docker run -d -p 5000:5000 --link redis dockerappp:v0.2
+2d519bc03a5212ead43ecaee7d5c4bc630738069824731ea1579462e28dcb796
 
