@@ -276,4 +276,33 @@ GO TO CONTAINER AND PING REDIS : winpty docker exec -it 2d519bc03a52 bash
 
 
 
-AUTOMATE CURRENT WORKFLOW WITH DOCKER COMPOSE 
+AUTOMATE CURRENT WORKFLOW WITH DOCKER COMPOSE : DOCKER COMPOSE : GOOGLE 
+TO vberify if Docker compose exist :
+    docker-compose version 
+    crerate docke-compose file
+    docker-compose up : to docker-compose
+
+     docker-compose up -d : left docker compose to run in background
+     docker-compose ps 
+     docker-compose logs -f
+     docker-compose stop
+     docker-compose rm
+
+
+
+     hoow to force docker to rebui the imafge :docker-compose build
+
+
+     ================= Docker CONTAINER NETWORKING =====================
+
+     CONTANAER A B (private network interface)
+
+     BRIDGE (DOCKER0)
+
+     host
+
+     INTERNET 
+
+
+
+     CHEK : docker networks ls 
