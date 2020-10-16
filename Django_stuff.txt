@@ -1,0 +1,5 @@
+conda activate myEnv
+info --envs
+ conda deactivate
+ django-admin startproject kimbo_django
+ 

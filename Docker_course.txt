@@ -521,3 +521,10 @@ added to a larger code base.
 The goal of Continuous integration is to provide rapid feedback so that if
 a defect is introduced into the code base, it can be identified and
 corrected as soon as possible.
+
+======== Docker-Mmachine =================
+docker-machine ls
+
+Docker swarm : point multlpe docker conter :
+    has Manager Node 
+    
