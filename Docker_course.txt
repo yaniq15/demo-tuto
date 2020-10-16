@@ -306,3 +306,218 @@ TO vberify if Docker compose exist :
 
 
      CHEK : docker networks ls 
+
+     Docker network Types
+        Closed Network/ None networks
+        Bridge networkshost
+        Host Networks 
+        NetworkOverlay 
+
+
+        $ docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+285ffcce2f3a        bridge              bridge              local
+41b75acd0225        host                host                local
+adc27ac04c73        none    
+
+
+    ============ None Network =================
+
+     docker run -d --net none busybox sleep 1000 :run image 
+
+     logon in container :
+     $ winpty docker exec -it d924d0ae09d13f89404dd77e34905df80a6964b06089a176bf3a4c81d1876943 bin/ash
+
+    / # ifconfig
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+
+          ================ Bridge Network ====================
+All container are connecte each Others 
+docker network inspect bridge 
+
+ docker run -d --name container_1 busybox sleep 1000
+389b656753e1e7d31413e18f052fb12f7009818b88cd6426c1313180fad6265b
+
+check IP NETWORKK IN CONTAINER :
+
+$ docker exec -t container_1  ifconfig
+
+eth0      Link encap:Ethernet  HWaddr 02:42:AC:11:00:02
+          inet addr:172.17.0.2  Bcast:172.17.255.255  Mask:255.255.0.0 (USE Thos ip to communicate different container )
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:15 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:1242 (1.2 KiB)  TX bytes:0 (0.0 B)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+
+$ docker exec -t container_3  ping 172.17.0.3
+PING 172.17.0.3 (172.17.0.3): 56 data bytes
+64 bytes from 172.17.0.3: seq=0 ttl=64 time=0.665 ms
+64 bytes from 172.17.0.3: seq=1 ttl=64 time=0.125 ms
+64 bytes from 172.17.0.3: seq=2 ttl=64 time=0.106 ms
+64 bytes from 172.17.0.3: seq=3 ttl=64 time=0.086 ms
+
+
+$ docker exec -t container_3  ping 8.8.8.8
+PING 8.8.8.8 (8.8.8.8): 56 data bytes
+64 bytes from 8.8.8.8: seq=0 ttl=37 time=12.459 ms
+64 bytes from 8.8.8.8: seq=1 ttl=37 time=9.771 ms
+
+Create Docker Network :
+docker network create --driver bridge my_bridge_network
+ docker network inspect c20d6b7a29ff36bb8799e83a7d595977dae5ba0e5c044627e6e9d06aebe72823
+
+
+add container to add bridge_network :
+    docker network connect bridge container_4
+
+
+    yannick.kipepo_kimbo@B01S2I20 MINGW64 ~
+$ docker exec -t container_4  ifconfig
+eth0      Link encap:Ethernet  HWaddr 02:42:AC:12:00:02
+          inet addr:172.18.0.2  Bcast:172.18.255.255  Mask:255.255.0.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:16 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:1312 (1.2 KiB)  TX bytes:0 (0.0 B)
+
+eth1      Link encap:Ethernet  HWaddr 02:42:AC:11:00:04
+          inet addr:172.17.0.4  Bcast:172.17.255.255  Mask:255.255.0.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:7 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:586 (586.0 B)  TX bytes:0 (0.0 B)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+
+
+Disconeet container to other bige network :
+    docker network disconnect bridge name of container 
+
+    Bref Brige Net : 2 IP Lo0 and eth0, container from different bridge can't connect eache other , nert to connect the bridge 
+
+
+
+================= Host Network ======================
+Open container they they call it 
+
+docker run -d --name container5 --net host busybox sleep 1000
+
+
+$ winpty docker exec -it container5 ifconfig
+br-c20d6b7a29ff Link encap:Ethernet  HWaddr 02:42:EF:AC:EB:50
+          inet addr:172.18.0.1  Bcast:172.18.255.255  Mask:255.255.0.0
+          inet6 addr: fe80::42:efff:feac:eb50/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:5 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:0 (0.0 B)  TX bytes:446 (446.0 B)
+
+docker0   Link encap:Ethernet  HWaddr 02:42:52:89:C9:7A
+          inet addr:172.17.0.1  Bcast:172.17.255.255  Mask:255.255.0.0
+          inet6 addr: fe80::42:52ff:fe89:c97a/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:828 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:832 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:66304 (64.7 KiB)  TX bytes:78300 (76.4 KiB)
+
+eth0      Link encap:Ethernet  HWaddr 02:50:00:00:00:01
+          inet addr:192.168.65.3  Bcast:192.168.65.15  Mask:255.255.255.240
+          inet6 addr: fe80::50:ff:fe00:1/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:1494 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:1231 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:934784 (912.8 KiB)  TX bytes:117490 (114.7 KiB)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:802 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:802 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:78540 (76.6 KiB)  TX bytes:78540 (76.6 KiB)
+
+veth125c9ee Link encap:Ethernet  HWaddr 32:1C:18:8B:82:CA
+          inet6 addr: fe80::301c:18ff:fe8b:82ca/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:1693 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:1706 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:159754 (156.0 KiB)  TX bytes:160760 (156.9 KiB)
+
+veth3be5f17 Link encap:Ethernet  HWaddr CA:BE:DB:73:D2:28
+          inet6 addr: fe80::c8be:dbff:fe73:d228/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:866 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:881 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:81900 (79.9 KiB)  TX bytes:83018 (81.0 KiB)
+
+vetha4bdb77 Link encap:Ethernet  HWaddr F6:3B:25:7F:67:21
+          inet6 addr: fe80::f43b:25ff:fe7f:6721/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:18 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:0 (0.0 B)  TX bytes:1452 (1.4 KiB)
+
+vetha7f2291 Link encap:Ethernet  HWaddr AA:53:BE:3B:60:5E
+          inet6 addr: fe80::a853:beff:fe3b:605e/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:12 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:0 (0.0 B)  TX bytes:936 (936.0 B)
+
+
+Has all Different IP for all HOst Machine
+
+
+
+
+================= Overlay Network ======================
+support multi-hopst Networking out-of-the box 
+
+
+Define Conmtainer with DOCKER cOMPOSE 
+
+
+
+=========================== Fit Docker Technology into Continuous====================
+
+Continuous integration is a software engineering practice in which
+isolated changes are immediately tested and reported when they are
+added to a larger code base.
+
+The goal of Continuous integration is to provide rapid feedback so that if
+a defect is introduced into the code base, it can be identified and
+corrected as soon as possible.
