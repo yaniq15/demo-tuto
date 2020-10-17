@@ -3,3 +3,77 @@ info --envs
  conda deactivate
  django-admin startproject kimbo_django
  
+
+ Init : perment que python considere le repetoire comme Package
+ sitting : store all project setting 
+ setting
+ urls :"store all URL pattens for your project. Basically the different pages of web application
+ wsgi: Py scrtipt that act as the web Server Gateway interface. deploy web app to production 
+ manage.py : association de plusieurs commands for build web app
+
+ >python manage.py runserver
+
+ start app : python manage.py startapp kimbo_app
+    __init__: idem
+    admin.py : register your model and django will use with Django admin interface
+    apps.py : application sepecic config
+    models.py :store the application data models 
+    tests.py : test function to test your conde 
+    views.py : This is where you have functions that handle request and return response 
+
+    Migrations Folder : stores database specific info as it relates to thje models
+
+Create APP: ==========================
+    creat views in app and map it in url
+    add app in setting : INSTALLED_APPS
+
+
+Templates :
+    TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
+    'DIRS': [TEMPLATE_DIR],
+
+
+======================== Help-APP ==================================
+Creer l application : 
+    python manage.py startapp help_app
+    Ajouter l app dans le sitting INSTALLED_APPS:
+    creer le views et le map avec URLS 
+    DANS views:
+        from django.http import HttpResponse
+        from django.shortcuts import render
+            CREER LA FONCTION RQUEST 
+
+    DANS URLS_app :
+    from django.conf.urls import url
+    from help_app import views
+
+    urlpatterns =[
+        url(r'^$', views.index, name='index'),
+
+    DANS URLS-GLOBAL:
+        url(r'^$', views_help.index, name='index'),
+
+        test le serveur : python manage.py runserver
+    AJOUTER DANS TAMPLATE LE DIRECTORY help_app, creer le file index 
+
+Creer url ds l app:
+    DANS URLS_app :
+    from django.conf.urls import url
+    from help_app import views
+
+    map avec le URL GLOBAL :
+        url(r'^$', views_help.index, name='index'),
+        url(r'^helpme/', include('help_app.urls'))
+
+Mapping with urlsapp et urls_global and Views:
+    def index(request):
+    my_dict = {'insert_me':'Here page we can find all info for help!'}
+    return render(request, 'help_app/index.html', context=my_dict)
+
+
+==================== stactic images ======================
+STATIC_DIR = os.path.join(BASE_DIR, "stactic")
+
+STATICFILES_DIRS = [
+    STATIC_DIR,
+]
