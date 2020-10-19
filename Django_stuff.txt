@@ -23,9 +23,14 @@ info --envs
 
     Migrations Folder : stores database specific info as it relates to thje models
 
-Create APP: ==========================
-    creat views in app and map it in url
-    add app in setting : INSTALLED_APPS
+
+
+
+
+
+
+
+
 
 
 Templates :
@@ -194,5 +199,201 @@ dans le fichier index dossier template
 
 EXERCICE MODEL ===============  REVION DJANGO APPLICATION ==============================
 
+Create new project DJANGO_REVISION____ AND ACTIVAT ENV 
+conda info --envs
 
 
+Create APP: ==========================
+    creat views in app and map it in url
+    add app in setting : INSTALLED_APPS
+    conda create --name myenv
+    conda activate myEnv
+    ango-admin startproject kimbo_revesion_django
+
+
+    create APP: python manage.py startapp python manage.py startapp chrsikimb_app
+
+    cree un folder templade dans le chriskim (global)
+
+    dans templates on cree encore un rep chrsikimb_app
+
+    dans chrsikimb_app on cree:
+            users.html
+            index.html
+
+    dans Setting on ajoute notre template et notre app :
+        TEMPLATE_DIR= os.path.join(BASE_DIR, 'templates') 
+            TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [TEMPLATE_DIR,],
+
+
+
+        INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'chrsikimb_app', 
+]========
+
+            ===========Ajout du model =============
+
+            from django.db import models
+
+# Create your models here.
+
+class User(models.Model):
+    fist_name = models.CharField(max_length=128)
+    las_name = models.CharField(max_length=128)
+    email = models.EmailField(max_length=128, unique=True) # on veut que l email soit unique 
+
+
+
+
+  =================== ajoout du view   ======================
+
+  from django.shortcuts import render
+from chrsikimb_app.models import User
+
+# Create your views here.
+
+def index(request):
+    return render(request, 'chrsikimb_app/index.html')
+
+def users(request):
+
+    user_list = User.objects.order_by('first_name')
+    user_dict = {'users': user_list}
+    return render(request, 'chrsikimb_app/users.html', context=user_dict)
+
+
+    ====================== Ajout URL ================================
+    cree un file urls DANS L APP (map with view)
+
+from django.conf.urls import url
+
+from chrsikimb_app import views
+
+urlpatterns = [
+    url(r'^$', views.users, name='users')
+
+
+]
+
+then GLOBAL URL : ***************
+
+from django.conf.urls import url, include
+from django.contrib import admin
+from django.urls import path
+from chrsikimb_app import views
+
+urlpatterns = [
+    url(r'^$', views.users, name='users'),
+    path('admin/', admin.site.urls),
+    url(r'^users/', include('chrsikimb_app.urls')) # when we use incleude module
+]
+
+
+
+=================Migrate the model to DB =====================
+
+    python manage.py migrate
+    
+
+    register the change : python manage.py makemigrations chrsikimb_app
+    to apply mig : >python manage.py migrate
+
+
++=================== us admin interface ======================
+
+from django.contrib import admin
+from chrsikimb_app.models import User
+
+
+# Register your models here.
+admin.site.register(User)
+
+=============== RUN SERVER TO VERIFY =============
+python manage.py runserver
+
+if ok then create a superuser :
+    python manage.py createsuperuser
+    >python manage.py migrate
+    python manage.py runserver
+
+
+====================== Populate the DB ==========================
+
+Creat Populate script in Global :
+
+
+import os
+
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'kimbo_revesion_django.settings' )
+
+import django
+django.setup()
+
+
+
+
+
+
+from chrsikimb_app.models import User
+from faker import Faker
+
+
+fakegen = Faker()
+
+def populate(N=5):
+    for entry in range(N):
+        fake_name = fakegen.name().split()
+        fake_first_name =fake_name[0]
+        fake_last_name = fake_name[1]
+        fake_email=fakegen.email()
+
+        # New ENTRY :
+    user =User.objects.get_or_create(first_name=fake_first_name, las_name= fake_last_name, email=fake_email)
+
+
+
+if __name__=='__main__':
+    print('POPULATINF DATABASES')
+    populate(10)
+    print('Complete')
+
+
+
+=================== Template taging ========================
+users.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+    <h1>Here are user for Christ_kimb</h1>
+    {% if users %}
+    <ol>
+        {% for person in users %}
+        <li>User info</li>
+        <ul>
+            <li>First Name: {{person.first_name}}</li>
+            <li>First Name: {{person.last_name}}</li>
+            <li>Email: {{person.email}}</li>
+        </ul>
+        {% endfor %}
+    </ol>
+
+    {% endif %}
+
+
+</body>
+</html>
