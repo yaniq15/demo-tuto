@@ -77,3 +77,122 @@ STATIC_DIR = os.path.join(BASE_DIR, "stactic")
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
+template : index 
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Couple Kipepo</title>
+        <link rel="stylesheet" href={% static 'css/mystyle.css' %}/>
+    </head>
+    <body>
+     <h1>This is our WORLD</h1>
+
+    <img src="{% static 'images/n83rspf_v5.jpg' %}" alt="ooooooooooooups">
+
+    </body>
+</html>
+
+
+
+======================== Django Models Overview =============================================
+
+SQL 
+Set the model then migrate date base (SQL)
+python manage.py migrate 
+Migrate in admin file 
+from django.contrib import admin 
+from app.models import Model1, Moodl2 
+admin.site.register (Model1)
+admin.site.register(Model2)
+
+communinicate with SQL 
+via interface with super user 
+
+    Creating Mdoels:
+    apres avoir creer le model
+        python manage.py migrate
+
+        python manage.py makemigrations help_app
+
+        python manage.py migrate
+            pour confirmer que notre module fonctionne avec l appplication :
+                >python manage.py shell
+                from help_app.models import Topic
+
+
+                verifions les Obkject dans la classe Topic:
+                     print(Topic.objects.all())
+                    creons l object 
+                    t =Topic(top_name="Social Network"
+                    t.save()
+                    print(Topic.objects.all())
+
+          ==================  Use admin django Interface in admin.py: 
+
+            from django.contrib import admin
+            from help_app.models import Topic, AccessRecord, Webpage
+
+#           Register your models here.
+            admin.site.register(Topic)
+            admin.site.register(AccessRecord)
+            admin.site.register(Webpage)
+
+            TO USE DB WITH ADMIN INTERFACE NEED TO CREATE SUP USER:
+
+                python manage.py createsuperuser
+                kimbo, yaniq15@me,com, Bell1234 for admin interface
+
+                >python manage.py runserver
+
+
+================= Use dummy data to populate your models ========================
+Faker library to create this scritpt :
+
+pip install Faker
+
+Populatin Models : =============
+
+ave le faker labrary : 
+    on creer un new file ex populate.py 
+    on doit premierement : 
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'kimbo_django.settings' )
+
+
+    import django
+    django.setup()
+    on import nos classe de notre modele (app):
+    from help_app.models import Topic, AccessRecord, Webpage
+
+    apres avoir creer le fichier populate on doit le rouler :
+        dans le env python 
+        python populate.py(le fichier creer) ppour populer
+
+
+==================== Model template VIEW , MTVB ========\
+CONNECTE VIEW TO DATA BASE_DIR
+1. in view.py import any models that we will; need to use 
+
+
+    return render(request, 'help_app/index.html', context=date_dict)
+
+2. use the view to query the model for data that we will NEED
+    dans views (apop):
+        from help_app.models import Topic, AccessRecord, Webpage
+        def index(request):
+    webpages_list = AccessRecord.objects.order_by('date')
+    date_dict= {'access_records':webpages_list}
+
+3.pass results from the model to to template
+dans le fichier index dossier template
+
+4 Edit thetemplate so that is ready to accept and dispaly the data from model
+5.Map a URL to the view.
+
+
+EXERCICE MODEL ===============  REVION DJANGO APPLICATION ==============================
+
+
+
