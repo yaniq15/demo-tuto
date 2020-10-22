@@ -255,11 +255,11 @@ class User(models.Model):
 
 
   =================== ajoout du view   ======================
-
+on map ce qu on mis dans le model
   from django.shortcuts import render
 from chrsikimb_app.models import User
 
-# Create your views here.
+# Create your views here dans l app.
 
 def index(request):
     return render(request, 'chrsikimb_app/index.html')
@@ -280,6 +280,8 @@ from chrsikimb_app import views
 
 urlpatterns = [
     url(r'^$', views.users, name='users')
+    path('admin/', admin.site.urls),
+    url(r'^users/', include('chrsikimb_app.urls')) # when we use incleude module
 
 
 ]
@@ -398,3 +400,103 @@ users.html
 
 </body>
 </html>
+
+
+========================== DJANGO LEVEL TREE ========================
+ON CREER NOTRE PROJET 
+Avec django admin command 
+on cree l appon cree le dossier templateon cree le fichie htlm , index et form 
+AJOUT TEMP ANS pp Dans sitting
+
+creer u file formapp.py ds  app
+
+from django import forms
+
+class FormName(forms.Form):
+    name= forms.CharField()
+    emauil =forms.EmailField()
+    text = forms.CharField(widget=forms.Textarea)
+
+    Views ===============
+
+    from django.shortcuts import render
+from . import forms
+# Create your views here.
+
+def index(request):
+    return render(request, 'basicapp/index.html')
+
+
+def from_name_view(request):
+    form = forms.FormName()
+    if request.method == 'POST':
+        form = forms.FormName(request.POST)
+
+        if form.is_valid():
+            # DO SOMEETHING CODDE
+            print("VALIDATION SUCCESS!")
+            print("NAME: " +form.cleaned_data['name'])
+            print("EMAIL: " + form.cleaned_data['email'])
+            print("TEXT: " + form.cleaned_data['text'])
+
+
+    Now time to point url file : =======================
+    from django.contrib import admin
+from django.urls import path
+from django.conf.urls import url
+from basicapp import views
+
+
+urlpatterns = [
+    url(r'^$', views.index, name='index'),
+    path('admin/', admin.site.urls),
+    url(r'^formpage', views.from_name_view, name='form_name')
+
+=============== index 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+     <link rel="stylesheet" href="https://google.com" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Well co to Kimbo House</h1>
+            <h2>Go to / formpage to fill out the form </h2>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+====================== form 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Forms</title>
+    <link rel="stylesheet" href="https://google.com" crossorigin="anonymous">
+
+</head>
+<body>
+    <h1>Fill out the form!</h1>
+    <div class="container">
+        <form  method="post">
+             {{form.as_p}}
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary" value="Submit">
+        </form>
+
+
+    </div>
+
+</body>
+</html>
+
+
+================= FORM VALIDATION ==========================
