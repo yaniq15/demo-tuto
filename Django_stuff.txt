@@ -509,3 +509,44 @@ IN FORM.Py
 
 
 ===================URL CONDING EXAMPLE =====================
+
+CREATE 4 html file in Template 
+then set view create methode 
+
+            # Create your views here.
+            def index(request):
+                return render(request, 'basic_app/index.html')
+
+            def other(request):
+                return render(request,'basic_app/other.html')
+
+
+            def relative(request):
+                return render (request, 'basic_app/relative_url_templates.html' )
+
+
+Map vieux in global URL :
+
+
+=========== TEMPLATE AND HERITANCE ==========================
+
+==============DJANGO Passoprd ==============================
+
+pip install bcrypt
+pip install django[argon2]
+
+iN SETTING :
+
+PASSWORD_HASHERS = PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+]
+
+
+create 3 directory 
+BASE_DIR = Path(__file__).resolve().parent.parent
+TEMPLATE_DIR= os.path.join(BASE_DIR, 'templates')
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+MEDIA_DIR = os.path.join(BASE_DIR, 'media')
