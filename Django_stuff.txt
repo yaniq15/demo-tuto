@@ -550,3 +550,63 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR= os.path.join(BASE_DIR, 'templates')
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
+
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS =[STATIC_DIR,]
+
+#MEDIA
+MEDIA_ROOT =MEDIA_DIR
+MEDIA_URL = '/media'
+
+
+=========== user modele to create user othorization model =================
+
+from django.db import models
+
+from django.contrib.auth.models import User
+# Create your models here.
+
+class UserProfileInfo(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE) add more attribute to User (instead opf only name email)
+
+
+    #addional
+    portfolio_site = models.URLField(blank=True)blank = true means case can be blanl
+
+    profile_pic = models.ImageField(upload_to='profile_pics', blank=True)
+
+
+    def __str__(self):
+        return self.user.username (username is a default attribute of User)
+
+
+        installl pillow 
+
+================== forms ==============================
+
+from django import forms
+from django.contrib.auth.models import User
+from basic_app.models import UserProfileInfo
+
+class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+
+    class Meta():
+        model = User
+        fields =('username', 'email', 'password')
+
+
+class UserProileInfon(forms.ModelForm):
+    class Meta():
+        model = UserProfileInfo
+        fields = ('portfolio_site', 'profile_pic')
+
+
+=============== Register ADmin ==========
+
+from django.contrib import admin
+from .models import UserProfileInfo
+# Register your models here.
+
+admin.site.register(UserProfileInfo)
